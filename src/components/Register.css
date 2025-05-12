@@ -1,0 +1,78 @@
+/* Sayfa için temel sıfırlama ve font */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+/* Sayfa ortalama ve form konteyneri */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Form kutusu */
+.register-form {
+  background-color: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 460px;
+  transition: all 0.3s ease;
+}
+
+/* Form başlığı */
+.form-title {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #1890ff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Kayıt ol butonu */
+.register-button {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1890ff;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.register-button:hover {
+  background-color: #40a9ff;
+}
+
+/* Giriş yap bağlantısı */
+.login-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+.login-btn {
+  color: #1890ff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-btn:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .register-form {
+    padding: 30px;
+    max-width: 100%;
+  }
+}

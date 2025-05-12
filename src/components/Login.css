@@ -1,0 +1,83 @@
+/* Tüm sayfa için temel sıfırlama ve font */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+/* Sayfa ortalama ve form konteyneri */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Form kutusu */
+.login-form {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px;
+}
+
+/* Form başlığı */
+.form-title {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #1890ff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Giriş butonu */
+.login-button {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Beni hatırla ve şifremi unuttum satırı */
+.checkbox-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -12px;
+  margin-top: -12px;
+  padding: 0 4px;
+}
+
+/* Şifremi unuttum bağlantısı */
+.forgot-link {
+  font-size: 0.9rem;
+  color: #1890ff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover {
+  color: #40a9ff;
+}
+
+/* Kayıt ol satırı */
+.register-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+.register-link a {
+  color: #1890ff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

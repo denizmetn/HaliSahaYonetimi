@@ -1,0 +1,37 @@
+.header {
+  text-align: center;
+  color: #000;
+  height: 120px;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 2px solid #046131;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header div {
+  font-size: 30px;
+  font-weight: bold;
+  color: #067e44;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 48px;
+}
+
+.header-button {
+  background-color: #39ab55;
+  color: #fff;
+  font-size: 21px;
+  padding: 26px 40px;
+  border: none;
+  border-radius: px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.header-button:hover {
+  background-color: #005bb5;
+}
