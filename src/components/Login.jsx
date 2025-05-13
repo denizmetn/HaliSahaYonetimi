@@ -18,7 +18,7 @@ const Login = () => {
     };
 
     fetch(
-      "https://v1.nocodeapi.com/deniz/google_sheets/tsOvycfipOPUpgBx?tabId=users",
+      "https://v1.nocodeapi.com/denizmeti/google_sheets/gZQBKHhsTHOJCSfx?tabId=users",
       requestOptions
     )
       .then((response) => response.json())
@@ -27,6 +27,9 @@ const Login = () => {
           (item) => item.EMAIL === EMAIL && item.PASSWORD === PASSWORD
         );
         if (user) {
+          localStorage.setItem("userEmail", user.EMAIL);
+          localStorage.setItem("userName", user.NAME);
+
           navigate("/dashboard");
           alert("Giriş Başarılı");
         } else {
@@ -35,7 +38,6 @@ const Login = () => {
       })
       .catch((error) => console.log("error", error));
   };
-
   return (
     <div className="login-container">
       <Form

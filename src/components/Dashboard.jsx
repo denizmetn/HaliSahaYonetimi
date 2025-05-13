@@ -15,7 +15,7 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FieldBooking from "./FieldBooking";
 import Cart from "./Cart";
@@ -31,56 +31,86 @@ const Dashboard = () => {
   const [address, setAddress] = useState();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [rowId, setRowId] = useState(null);
 
-  const fetchGetUser = () => {
+  useEffect(() => {
+    const emailFromStorage = localStorage.getItem("userEmail");
+    if (emailFromStorage) {
+      fetchGetUser(emailFromStorage);
+    }
+  }, []);
+
+  const fetchGetUser = (userEmail) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var requestOptions = {
-      method: "get",
-      headers: myHeaders,
-      redirect: "follow",
-    };
 
     fetch(
-      "https://v1.nocodeapi.com/deniz/google_sheets/tsOvycfipOPUpgBx?tabId=users",
-      requestOptions
+      "https://v1.nocodeapi.com/denizmeti/google_sheets/gZQBKHhsTHOJCSfx?tabId=users",
+      {
+        method: "get",
+        headers: myHeaders,
+        redirect: "follow",
+      }
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result && result.length > 0) {
-          const user = result[0];
-          setUsername(user.name);
-          setEmail(user.email);
+        const userList = result.data || result; // bazı response'larda 'data' altında olur
+        const currentUser = userList.find((user) => user.EMAIL === userEmail);
+        if (currentUser) {
+          setUsername(currentUser.NAME || "");
+          setEmail(currentUser.EMAIL || "");
+          setTelephone(currentUser.TELEPHONE || "");
+          setAge(currentUser.AGE || "");
+          setAddress(currentUser.ADDRESS || "");
+          setRowId(currentUser.row_id || currentUser.id); // NocodeAPI'den dönen row id
         }
       })
-
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log("Kullanıcı verisi alınamadı:", error));
   };
 
   const handleSave = () => {
+    if (!rowId) {
+      console.error("Row ID eksik!");
+      return;
+    }
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+
+    const updatedData = {
+      row_id: rowId,
+      TELEPHONE: telephone,
+      AGE: age,
+      ADDRESS: address,
+    };
+
     var requestOptions = {
       method: "put",
       headers: myHeaders,
       redirect: "follow",
-      body: JSON.stringify({
-        row_id: 3,
-        name: username,
-        email: email,
-        phone: telephone,
-        age: age,
-        address: address,
-      }),
+      body: JSON.stringify(updatedData),
     };
 
     fetch(
-      "https://v1.nocodeapi.com/deniz/google_sheets/tsOvycfipOPUpgBx?tabId=users",
+      "https://v1.nocodeapi.com/denizmeti/google_sheets/gZQBKHhsTHOJCSfx?tabId=users",
       requestOptions
     )
-      .then((response) => response.json())
-      .then((result) => console.log("Updated user:", result))
-      .catch((error) => console.log("error", error));
+      .then((response) => {
+        if (!response.ok) {
+          console.error("API Hatası:", response.status, response.statusText);
+          throw new Error("Güncelleme başarısız oldu!");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        console.log("Güncellenmiş kullanıcı:", result);
+        fetchGetUser(); // Kullanıcı verilerini tekrar al
+        setOpenModal(false); // Modal'ı kapat
+      })
+      .catch((error) => {
+        console.error("Hata:", error);
+        alert("Bir hata oluştu! Güncelleme başarısız.");
+      });
   };
 
   const handleMenuSelect = (menu) => {
@@ -96,7 +126,6 @@ const Dashboard = () => {
     setOpenModal(false);
   };
 
-  //header kısmında hangi başlık yazacağını
   const headerTitle = () => {
     switch (selectedMenu) {
       case "1":
@@ -107,6 +136,10 @@ const Dashboard = () => {
         return "Saha   Kiralama";
     }
   };
+
+  useEffect(() => {
+    fetchGetUser();
+  }, []);
 
   return (
     <Layout className="fullpage-layout">
@@ -155,10 +188,10 @@ const Dashboard = () => {
 
       <Modal
         className="dashboard-modal"
-        closable={{ "aria-label": "Custom Close Button" }}
         open={openModal}
         centered
         onCancel={closeModal}
+        onOk={handleSave}
       >
         <Title level={2}>Profil</Title>
         <Space direction="vertical" className="profile-info">
@@ -168,46 +201,14 @@ const Dashboard = () => {
           </div>
 
           <div className="profile-info-item">
-            <Title level={4}>E-Mail</Title>
-            <span>{email}</span>
+            <Title level={5}>E-Mail</Title>
+            <Input value={email} disabled />
           </div>
 
-          <Form
-            onFinish={handleSave}
-            layout="vertical"
-            className="profile-form"
-          >
-            <Form.Item label="Kullanıcı Adı">
-              <Input
-                style={{ width: "300px" }}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item label="E-Mail">
-              <Input
-                style={{ width: "300px" }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item label="Kullanıcı Adı">
-              <Input
-                style={{ width: "300px" }}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item label="E-Mail">
-              <Input
-                style={{ width: "300px" }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-
+          <Form layout="vertical" className="profile-form">
             <Form.Item label="Telefon Numarası">
               <Input
+                value={telephone}
                 style={{ width: "300px" }}
                 placeholder="Telefon numarası giriniz..."
                 onChange={(e) => setTelephone(e.target.value)}
@@ -216,6 +217,7 @@ const Dashboard = () => {
 
             <Form.Item label="Yaş">
               <InputNumber
+                value={age}
                 style={{ width: "300px" }}
                 min={1}
                 placeholder="Yaşınızı giriniz..."
@@ -225,6 +227,7 @@ const Dashboard = () => {
 
             <Form.Item label="Adres">
               <TextArea
+                value={address}
                 style={{ width: "300px" }}
                 placeholder="Adres giriniz..."
                 rows={3}
