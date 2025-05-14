@@ -47,6 +47,7 @@ const Cart = () => {
 
   const closeModal = () => {
     setOpenModal(false);
+
     form.resetFields();
   };
 

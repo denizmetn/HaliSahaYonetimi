@@ -9,7 +9,7 @@ const FieldBooking = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedHour, setSelectedHour] = useState(null);
+  const [selectedHours, setSelectedHours] = useState([]);
   const [hourlyAvailability, setHourlyAvailability] = useState({});
 
   const handleFilterChange = (filterField) => {
@@ -24,6 +24,7 @@ const FieldBooking = () => {
   const showModal = (field) => {
     setSelectedField(field);
     setOpenModal(true);
+    setSelectedHours([]);
     setHourlyAvailability({});
   };
 
@@ -45,44 +46,39 @@ const FieldBooking = () => {
     }
   };
 
-  const handleHourSelect = (hour) => {
-    setSelectedHour(hour);
+  const handleHoursSelect = (hour) => {
+    if (selectedHours.includes(hour)) {
+      setSelectedHours(selectedHours.filter((h) => h !== hour));
+    } else {
+      setSelectedHours([...selectedHours, hour]);
+    }
   };
 
   const handleAddCart = () => {
-    let newItem = null;
-    const cartData = cart.some((item) => {
-      return (
-        item.id === selectedField.id &&
-        item.date === selectedDate &&
-        (selectedField.type === "saatlik"
-          ? item.hour === `${selectedHour}:00 - ${selectedHour + 1}:00`
-          : true)
-      );
-    });
-
-    if (cartData) {
-      alert("Bu tarih ve saat aralığı zaten sepete eklenmiş.");
-      return;
-    }
-
+    let alreadyInCart = null;
     if (selectedField.type === "saatlik") {
-      if (
-        !selectedDate ||
-        selectedHour === null ||
-        hourlyAvailability[selectedHour] !== "boş"
-      ) {
-        alert("Lütfen tarih ve uygun bir saat seçin.");
+      if (!selectedDate || selectedHours.length === 0) {
+        alert("Lütfen tarih ve uygun saat(leri) seçin.");
         return;
       }
-      newItem = {
-        id: selectedField.id,
-        name: selectedField.name,
-        type: selectedField.type,
-        date: selectedDate,
-        hour: `${selectedHour}:00 - ${selectedHour + 1}:00`,
-        hourlyPrice: 150,
-      };
+
+      alreadyInCart = selectedHours.filter((hour) =>
+        cart.some(
+          (item) =>
+            item.id === selectedField.id &&
+            item.date === selectedDate &&
+            item.hour === `${hour}:00 - ${hour + 1}:00`
+        )
+      );
+
+      if (alreadyInCart.length > 0) {
+        alert("Seçtiğiniz saatler arasında zaten sepete eklenmiş olanlar var.");
+        return;
+      }
+
+      addCart(selectedField, selectedHours, selectedDate);
+      alert("Seçtiğiniz saat(ler) başarıyla sepete eklendi.");
+      closeModal();
     } else if (selectedField.type === "günlük") {
       if (
         !selectedDate ||
@@ -93,7 +89,16 @@ const FieldBooking = () => {
         return;
       }
 
-      newItem = {
+      alreadyInCart = cart.find(
+        (item) => item.id === selectedField.id && item.date === selectedDate
+      );
+
+      if (alreadyInCart) {
+        alert("bu tarih zaten sepete eklendi.");
+        return;
+      }
+
+      const newItem = {
         id: selectedField.id,
         name: selectedField.name,
         type: selectedField.type,
@@ -101,11 +106,12 @@ const FieldBooking = () => {
         hour: null,
         dailyPrice: 3000,
       };
-    }
+      console.log(newItem);
 
-    addCart(newItem);
-    alert("Seçiminiz başarıyla sepete eklendi.");
-    closeModal();
+      addCart(newItem);
+      alert("Seçiminiz başarıyla sepete eklendi.");
+      closeModal();
+    }
   };
 
   const cellRender = (date) => {
@@ -176,11 +182,9 @@ const FieldBooking = () => {
         open={openModal}
         onCancel={closeModal}
         footer={[
-          selectedDate && (
-            <Button key="add" type="primary" onClick={handleAddCart}>
-              Sepete Ekle
-            </Button>
-          ),
+          <Button key="add" type="primary" onClick={handleAddCart}>
+            Sepete Ekle
+          </Button>,
         ]}
       >
         {selectedField?.type === "saatlik" ? (
@@ -203,9 +207,9 @@ const FieldBooking = () => {
                   return (
                     <Button
                       key={hour}
-                      type={selectedHour === hour ? "dashed" : "primary"}
+                      type={selectedHours.includes(hour) ? "dashed" : "primary"}
                       disabled={hourlyAvailability[hour] !== "boş"}
-                      onClick={() => handleHourSelect(hour)}
+                      onClick={() => handleHoursSelect(hour)}
                     >
                       {hour === 23
                         ? `${hour}:00 - 00:00`

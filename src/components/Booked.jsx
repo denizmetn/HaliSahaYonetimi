@@ -83,7 +83,7 @@ const Booked = () => {
 
     try {
       const response = await fetch(
-        "https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=halısaha",
+        "https://v1.nocodeapi.com/denimetin/google_sheets/HhYRNREqIXfLtdZV?tabId=halısaha",
         { method: "GET", headers: myHeaders, redirect: "follow" }
       );
       const result = await response.json();
@@ -119,7 +119,7 @@ const Booked = () => {
     };
 
     fetch(
-      `https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=halısaha&row_id=${key}`,
+      `https://v1.nocodeapi.com/denimetin/google_sheets/HhYRNREqIXfLtdZV?tabId=halısaha&row_id=${key}`,
       requestOptions
     )
       .then((response) => response.text())

@@ -45,7 +45,7 @@ const Dashboard = () => {
     myHeaders.append("Content-Type", "application/json");
 
     fetch(
-      "https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=users",
+      "https://v1.nocodeapi.com/denimetin/google_sheets/HhYRNREqIXfLtdZV?tabId=users",
       {
         method: "get",
         headers: myHeaders,
@@ -87,7 +87,7 @@ const Dashboard = () => {
     };
 
     fetch(
-      "https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=users",
+      "https://v1.nocodeapi.com/denimetin/google_sheets/HhYRNREqIXfLtdZV?tabId=users",
       requestOptions
     )
       .then((response) => {
@@ -139,11 +139,15 @@ const Dashboard = () => {
       <Sider>
         <div
           style={{
-            height: "32px",
             margin: "16px",
-            background: "#ffffff33",
+            fontSize: "20px",
+            fontWeight: "bold",
+            color: "white",
           }}
-        />
+        >
+          DENİZ HALISAHA
+        </div>
+
         <Menu
           theme="dark"
           mode="inline"
