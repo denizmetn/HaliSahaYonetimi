@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./components/CartContext";
+import Booked from "./components/Booked";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/field-booking" element={<FieldBooking />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/booked" element={<Booked />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

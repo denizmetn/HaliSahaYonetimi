@@ -24,11 +24,11 @@ const useStyle = createStyles(({ css, token }) => {
 
 const Cart = () => {
   const { styles } = useStyle();
-  const { cart, deleteCart, paymentSuccess } = useContext(CartContext); //sepeti sepetten kaldırmayı ve ödeme başarılı bilgilerini alıyor
+  const { cart, deleteCart, paymentSuccess } = useContext(CartContext);
 
-  const [total, setTotal] = useState(0); //toplam fiyat için
-  const [openModal, setOpenModal] = useState(false); //modql
-  const [form] = Form.useForm(); //ödeme formu için
+  const [total, setTotal] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const calculatedTotal = cart.reduce((sum, field) => {
@@ -40,7 +40,9 @@ const Cart = () => {
   }, [cart]);
 
   const showModal = () => {
-    setOpenModal(true);
+    if (total > 0) {
+      setOpenModal(true);
+    }
   };
 
   const closeModal = () => {
@@ -48,8 +50,7 @@ const Cart = () => {
     form.resetFields();
   };
 
-  //modal içinden ödeme yap dedikten sonra çalışıyor toplamı sıfırlıyor sepeti boşaltıyor
-  const handlePayment = (type) => {
+  const handlePayment = () => {
     form.validateFields().then(() => {
       paymentSuccess();
       setTotal(0);
@@ -57,7 +58,6 @@ const Cart = () => {
     });
   };
 
-  //tablo sütunları
   const columns = [
     {
       title: "Saha Adı",
@@ -77,7 +77,7 @@ const Cart = () => {
     {
       title: "Saat",
       dataIndex: "hour",
-      render: (text) => text || "-",
+      render: (text, field) => (field.type === "saatlik" ? text : "-"),
       width: 200,
     },
     {
@@ -90,7 +90,6 @@ const Cart = () => {
       },
       width: 200,
     },
-
     {
       title: "İşlemler",
       key: "actions",
@@ -103,7 +102,6 @@ const Cart = () => {
     },
   ];
 
-  //tablodaki sütunlarda hangi bilgilerin olacağı name sütünunda field.name saha adı gibi
   const dataSource = cart.map((field) => ({
     key: field.key,
     name: field.name,
@@ -168,13 +166,30 @@ const Cart = () => {
               rules={[{ required: true, message: "Tarih gerekli" }]}
             >
               <Input
-                placeholder="01/25"
+                placeholder="MM/YY"
                 maxLength={5}
                 onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/\D/g, "")
-                    .replace(/^(\d{2})(\d{1,2})$/, "$1/$2")
-                    .slice(0, 5);
+                  let value = e.target.value.replace(/\D/g, "");
+
+                  if (value.length === 1 && parseInt(value, 10) > 1) {
+                    e.target.value = "0" + value + "/";
+                  } else if (value.length === 2) {
+                    const month = parseInt(value, 10);
+                    if (month > 12 || month < 1) {
+                      e.target.value = "";
+                    } else {
+                      e.target.value = value + "/";
+                    }
+                  } else if (value.length === 3 && !value.includes("/")) {
+                    e.target.value = value.slice(0, 2) + "/" + value.slice(2);
+                  } else if (value.length === 4) {
+                    const year = parseInt(value.slice(2), 10);
+                    if (year === 24) {
+                      e.target.value = value.slice(0, 2) + "/";
+                    } else if (year >= 25) {
+                      e.target.value = value.slice(0, 2) + "/" + value.slice(2);
+                    }
+                  }
                 }}
               />
             </Form.Item>

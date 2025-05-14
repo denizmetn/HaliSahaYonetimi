@@ -18,7 +18,7 @@ const Login = () => {
     };
 
     fetch(
-      "https://v1.nocodeapi.com/denizmeti/google_sheets/gZQBKHhsTHOJCSfx?tabId=users",
+      "https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=users",
       requestOptions
     )
       .then((response) => response.json())
@@ -32,11 +32,13 @@ const Login = () => {
 
           navigate("/dashboard");
           alert("Giriş Başarılı");
+          navigate("/dashboard");
         } else {
           alert("E-Mail veya şifre hatalı!");
         }
       })
       .catch((error) => console.log("error", error));
+    //nocode açılınca kaldırılacak
   };
   return (
     <div className="login-container">

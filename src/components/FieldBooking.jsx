@@ -3,17 +3,15 @@ import { Card, Row, Col, Select, Button, Modal, Calendar, Badge } from "antd";
 import { CartContext } from "./CartContext";
 
 const FieldBooking = () => {
-  const { addCart, fields, setFields } = useContext(CartContext); //contextden gelen bilgiler(verileri sepete eklemek için ve sahaların bilgileri)
-  const [filteredFields, setFilteredFields] = useState(fields); //filtrelenmiş sahaların bulunduğu state
-  const [fieldTypeFilter, setFieldTypeFilter] = useState(null); //saatlik ve günlük olarak filtrelemek için kullanılıyor
-  const [openModal, setOpenModal] = useState(false); //modal için
-  const [selectedField, setSelectedField] = useState(null); //seçilen saha
-  const [selectedDate, setSelectedDate] = useState(null); //seçilen tarih(günlük saha için)
-  const [selectedHour, setSelectedHour] = useState(null); //seçilen saat(saatlik saha için)
-  const [hourlyAvailability, setHourlyAvailability] = useState({}); //uygun saatler için kullanılıyor
+  const { addCart, fields, setFields, cart } = useContext(CartContext);
+  const [filteredFields, setFilteredFields] = useState(fields);
+  const [fieldTypeFilter, setFieldTypeFilter] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedField, setSelectedField] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedHour, setSelectedHour] = useState(null);
+  const [hourlyAvailability, setHourlyAvailability] = useState({});
 
-  //günlük sahayı ve saatlik sahayı filtrelemek için kullanılıyor (olmayadabilir aslında çünkü zaten iki saha
-  //var ve belli oluyor hangisi hangisi olduğu ama bence kalabilir)
   const handleFilterChange = (filterField) => {
     setFieldTypeFilter(filterField);
     if (filterField) {
@@ -23,7 +21,6 @@ const FieldBooking = () => {
     }
   };
 
-  //modal aç kapa için
   const showModal = (field) => {
     setSelectedField(field);
     setOpenModal(true);
@@ -34,8 +31,6 @@ const FieldBooking = () => {
     setOpenModal(false);
   };
 
-  /*bu fonksiyon seçilen tarihe göre saatlik kullanılabilirlik durumunu günceller yani saatlik saha içinde takvimden
-  tarih seçip basınca çıkan saatlerin kullanılabilirlik durumunu gösteriyor diyebiliriz*/
   const handleDateSelect = (date) => {
     setSelectedDate(date.format("YYYY.MM.DD"));
 
@@ -50,15 +45,27 @@ const FieldBooking = () => {
     }
   };
 
-  //seçtiğimiz saati tutuyor
   const handleHourSelect = (hour) => {
     setSelectedHour(hour);
   };
 
-  /*sepete ekleme eğer seçilen saha saatlik ise newItem olarak sahaadı tipi tarihi saati ve ücretini sepete ekliyor
-   eğer günlük ise de sahaadı tipi tarihi ve ücretini sepete ekliyor saat boş*/
   const handleAddCart = () => {
     let newItem = null;
+    const cartData = cart.some((item) => {
+      return (
+        item.id === selectedField.id &&
+        item.date === selectedDate &&
+        (selectedField.type === "saatlik"
+          ? item.hour === `${selectedHour}:00 - ${selectedHour + 1}:00`
+          : true)
+      );
+    });
+
+    if (cartData) {
+      alert("Bu tarih ve saat aralığı zaten sepete eklenmiş.");
+      return;
+    }
+
     if (selectedField.type === "saatlik") {
       if (
         !selectedDate ||
@@ -101,7 +108,6 @@ const FieldBooking = () => {
     closeModal();
   };
 
-  //günlük saha için kullanılabilirlik durumlarını takvime ekliyor
   const cellRender = (date) => {
     const status = selectedField.availability[date.format("YYYY.MM.DD")];
 
@@ -113,7 +119,6 @@ const FieldBooking = () => {
     ) : null;
   };
 
-  //bugünden önceki tarihleri seçtirtmiyor
   const disabledDate = (current) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -132,13 +137,19 @@ const FieldBooking = () => {
         <Select.Option value="günlük">Günlük Sahalar</Select.Option>
       </Select>
 
-      <Row gutter={16} style={{ padding: 24 }}>
+      <Row gutter={16} style={{ padding: 24, justifyContent: "space-between" }}>
         {filteredFields.map((field) => (
-          <Col xl={6} key={field.id}>
+          <Col xl={7} key={field.id}>
             <Card
               cover={<img src={field.imageUrl} />}
               actions={[
-                <Button onClick={() => showModal(field)}>Kirala</Button>,
+                <Button
+                  onClick={() => showModal(field)}
+                  type="primary"
+                  style={{ width: "150px" }}
+                >
+                  Kirala
+                </Button>,
               ]}
             >
               <Card.Meta
@@ -218,17 +229,3 @@ const FieldBooking = () => {
   );
 };
 export default FieldBooking;
-
-/*RETURN İÇİ
-SELECT,günlük mü saatlik mi seçenekleri
-
-ROW bloğu, bir listedeki spor sahalarını kartlar halinde yan yana gösterir
-her bir saha için bir kart oluşturulur
-kartlarda sahanın fotoğrafı adı türü  ücreti ve kirala butonu bulunur. 
-butonuna tıklandığında modal açılıyor 
-yani takvim modalın ama saatlik mi için yoksa günlük için mi açıldığının kontrolü modalda
-
-MODAL bloğu, takvimi açıyor eğer seçilen saha saatlik ise (selectedField?.type === "saatlik")
-bir takvim ve saat seçimi arayüzü sunar. takvimden tarihi seçip sonra da müsait saatlerden birini seçebiliyorsun
-eğer seçilen saha günlük ise cellRender fonksiyonu buna aktarılır ve uygun dolu günler ortaya çıkar 
-*/

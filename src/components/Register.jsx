@@ -17,7 +17,7 @@ const Register = () => {
     };
 
     fetch(
-      "https://v1.nocodeapi.com/denizmeti/google_sheets/gZQBKHhsTHOJCSfx?tabId=users",
+      "https://v1.nocodeapi.com/denizmetinn/google_sheets/rMlcnoJwYTsvgPny?tabId=users",
       requestOptions
     )
       .then((response) => {

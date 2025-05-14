@@ -1,4 +1,3 @@
-/* Sayfa için temel sıfırlama ve font */
 html,
 body {
   margin: 0;
@@ -8,7 +7,6 @@ body {
   background-color: #f0f2f5;
 }
 
-/* Sayfa ortalama ve form konteyneri */
 .register-container {
   display: flex;
   justify-content: center;
@@ -16,7 +14,6 @@ body {
   height: 100vh;
 }
 
-/* Form kutusu */
 .register-form {
   background-color: #ffffff;
   padding: 50px 40px;
@@ -27,7 +24,6 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Form başlığı */
 .form-title {
   text-align: center;
   margin-bottom: 32px;
@@ -36,7 +32,6 @@ body {
   font-weight: bold;
 }
 
-/* Kayıt ol butonu */
 .register-button {
   width: 100%;
   height: 40px;
@@ -52,7 +47,6 @@ body {
   background-color: #40a9ff;
 }
 
-/* Giriş yap bağlantısı */
 .login-link {
   text-align: center;
   margin-top: 16px;
@@ -67,12 +61,4 @@ body {
 
 .login-btn:hover {
   text-decoration: underline;
-}
-
-/* Responsive adjustments */
-@media (max-width: 500px) {
-  .register-form {
-    padding: 30px;
-    max-width: 100%;
-  }
 }
