@@ -5,7 +5,6 @@ import { CartContext } from "./CartContext";
 const FieldBooking = () => {
   const { addCart, fields, setFields, cart } = useContext(CartContext);
   const [filteredFields, setFilteredFields] = useState(fields);
-  const [fieldTypeFilter, setFieldTypeFilter] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -13,7 +12,6 @@ const FieldBooking = () => {
   const [hourlyAvailability, setHourlyAvailability] = useState({});
 
   const handleFilterChange = (filterField) => {
-    setFieldTypeFilter(filterField);
     if (filterField) {
       setFilteredFields(fields.filter((field) => field.type === filterField));
     } else {
@@ -70,7 +68,6 @@ const FieldBooking = () => {
             item.hour === `${hour}:00 - ${hour + 1}:00`
         )
       );
-
       if (alreadyInCart.length > 0) {
         alert("Seçtiğiniz saatler arasında zaten sepete eklenmiş olanlar var.");
         return;
@@ -94,10 +91,9 @@ const FieldBooking = () => {
       );
 
       if (alreadyInCart) {
-        alert("bu tarih zaten sepete eklendi.");
+        alert("bu tarih zaten sepette mevcut.");
         return;
       }
-
       const newItem = {
         id: selectedField.id,
         name: selectedField.name,
@@ -107,7 +103,6 @@ const FieldBooking = () => {
         dailyPrice: 3000,
       };
       console.log(newItem);
-
       addCart(newItem);
       alert("Seçiminiz başarıyla sepete eklendi.");
       closeModal();
@@ -142,7 +137,6 @@ const FieldBooking = () => {
         <Select.Option value="saatlik">Saatlik Sahalar</Select.Option>
         <Select.Option value="günlük">Günlük Sahalar</Select.Option>
       </Select>
-
       <Row gutter={16} style={{ padding: 24, justifyContent: "space-between" }}>
         {filteredFields.map((field) => (
           <Col xl={7} key={field.id}>
@@ -172,7 +166,6 @@ const FieldBooking = () => {
           </Col>
         ))}
       </Row>
-
       <Modal
         title={
           selectedField?.type === "saatlik"
@@ -193,6 +186,7 @@ const FieldBooking = () => {
               fullscreen={false}
               onSelect={handleDateSelect}
               disabledDate={disabledDate}
+              mode="month"
             />
             {selectedDate && (
               <div
@@ -226,6 +220,7 @@ const FieldBooking = () => {
             cellRender={cellRender}
             onSelect={(date) => setSelectedDate(date.format("YYYY.MM.DD"))}
             disabledDate={disabledDate}
+            mode="month"
           />
         )}
       </Modal>

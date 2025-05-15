@@ -1,3 +1,4 @@
+import { Modal } from "antd";
 import React, { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
@@ -13,7 +14,11 @@ const getHourlyAvailability = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]); //sepetteki sahaları tutuyor
+  const [cart, setCart] = useState([]);
+  const [modal, setModal] = useState(false);
+  const closeModal = () => {
+    setModal(false);
+  };
 
   //saha bilgileri
   const [fields, setFields] = useState([
@@ -95,7 +100,6 @@ export const CartProvider = ({ children }) => {
     },
   ]);
 
-  //Sheets'ten verileri çekiyorum
   const fetchAvailability = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -114,7 +118,6 @@ export const CartProvider = ({ children }) => {
       const result = await response.json();
 
       console.log(result);
-
       if (result && Array.isArray(result.data)) {
         const updatedFields = fields.map((field) => {
           const bookedItems = result.data.filter(
@@ -138,7 +141,6 @@ export const CartProvider = ({ children }) => {
           return field;
         });
 
-        setFields(updatedFields);
       } else {
         console.error("Beklenen veri dizisi alınamadı.", result);
       }
@@ -170,7 +172,6 @@ export const CartProvider = ({ children }) => {
             },
           ];
     console.log(newItem);
-    setCart([...cart, ...newItem]);
   };
 
   const deleteCart = (key) => {
@@ -179,7 +180,7 @@ export const CartProvider = ({ children }) => {
 
   const paymentSuccess = () => {
     //const userMaile kadar olan kısım nocodeaçılınca kapatılacak çünkü bu frontend de olanı
-    //ama zaten backend içinde aynısı yazıldı yukarının içine
+
     /*const updatedFields = fields.map((field) => {
       const bookedItems = cart.filter((item) => item.id === field.id);
 
@@ -205,7 +206,6 @@ export const CartProvider = ({ children }) => {
     const userEmail =
       localStorage.getItem("userEmail") || "Bilinmeyen Kullanıcı";
 
-    //her satır sheetse eklenecek
     const rows = cart.map((item) => [
       userEmail,
       item.type,
@@ -233,9 +233,7 @@ export const CartProvider = ({ children }) => {
       .then((result) => {
         console.log("Kayıt başarılı:", result);
         setCart([]);
-        alert(
-          "Ödeme başarılı! Gerekli bilgiler e-posta adresinize gönderildi. İyi eğlenceler dileriz!!"
-        );
+        setModal(true);
       })
       .catch((error) => {
         console.log("Google Sheets'e yazma hatası:", error);
@@ -255,6 +253,18 @@ export const CartProvider = ({ children }) => {
       }}
     >
       {children}
+      <Modal
+        title="Ödeme Maili"
+        open={modal}
+        onOk={closeModal}
+        onCancel={closeModal}
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        <div>
+          Ödeme başarılı! Gerekli bilgiler e-posta adresinize gönderildi. İyi
+          eğlenceler dileriz!
+        </div>
+      </Modal>
     </CartContext.Provider>
   );
 };

@@ -38,26 +38,6 @@ body {
   font-weight: 500;
 }
 
-.checkbox-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: -12px;
-  margin-top: -12px;
-  padding: 0 4px;
-}
-
-.forgot-link {
-  font-size: 0.9rem;
-  color: #1890ff;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.forgot-link:hover {
-  color: #40a9ff;
-}
-
 .register-link {
   text-align: center;
   margin-top: 16px;

@@ -20,9 +20,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FieldBooking from "./FieldBooking";
 import Cart from "./Cart";
+import Booked from "./Booked";
 import Title from "antd/es/typography/Title";
 import TextArea from "antd/es/input/TextArea";
-import Booked from "./Booked";
+
 const { Header, Content, Sider } = Layout;
 
 const Dashboard = () => {
@@ -112,15 +113,6 @@ const Dashboard = () => {
     setSelectedMenu(menu.key);
   };
 
-  const showModal = () => {
-    fetchGetUser();
-    setOpenModal(true);
-  };
-
-  const closeModal = () => {
-    setOpenModal(false);
-  };
-
   const headerTitle = () => {
     switch (selectedMenu) {
       case "1":
@@ -132,6 +124,15 @@ const Dashboard = () => {
       default:
         return "Saha   Kiralama";
     }
+  };
+
+  const showModal = () => {
+    fetchGetUser();
+    setOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -174,7 +175,16 @@ const Dashboard = () => {
       </Sider>
 
       <Layout>
-        <Header className="custom-header">
+        <Header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "white",
+            height: "64px",
+            padding: "48px 24px",
+          }}
+        >
           <div style={{ fontWeight: "bold", fontSize: "36px" }}>
             {headerTitle()}
           </div>

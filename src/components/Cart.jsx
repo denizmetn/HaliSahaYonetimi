@@ -47,7 +47,6 @@ const Cart = () => {
 
   const closeModal = () => {
     setOpenModal(false);
-
     form.resetFields();
   };
 
@@ -86,8 +85,8 @@ const Cart = () => {
       dataIndex: "price",
       render: (price, field) => {
         return field.type === "saatlik"
-          ? `₺${price} / saat`
-          : `₺${price} / gün`;
+          ? `${price} TL / saat`
+          : `${price} TL / gün`;
       },
       width: 200,
     },
@@ -127,7 +126,6 @@ const Cart = () => {
 
       <Modal
         title="Ödeme Yap"
-        closable={{ "aria-label": "Custom Close Button" }}
         open={openModal}
         onCancel={closeModal}
         footer={[
@@ -171,7 +169,7 @@ const Cart = () => {
                 maxLength={5}
                 onInput={(e) => {
                   let value = e.target.value.replace(/\D/g, "");
-
+                  //1den buyukse başına 0
                   if (value.length === 1 && parseInt(value, 10) > 1) {
                     e.target.value = "0" + value + "/";
                   } else if (value.length === 2) {
@@ -235,7 +233,3 @@ const Cart = () => {
   );
 };
 export default Cart;
-/*RETURN İÇİ
-TABLE,tablo için
-ROW,ödeme yap butonu
-MODAL,ödeme bilgileri modalı açıyor kart numrası ayyıl cvv sahip adı harf rakam kontrolü de var*/

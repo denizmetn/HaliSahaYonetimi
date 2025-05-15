@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Result } from "antd";
+import { Button, Checkbox, Form, Input, Layout, Result } from "antd";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ const Login = () => {
     //nocode açılınca kaldırılacak
   };
   return (
-    <div className="login-container">
+    <Layout className="login-container">
       <Form
         name="basic"
         labelCol={{ span: 24 }}
@@ -73,15 +73,6 @@ const Login = () => {
         </Form.Item>
 
         <Form.Item>
-          <div className="checkbox-link">
-            <Checkbox name="remember">Beni Hatırla</Checkbox>
-            <Link to="/forgot-password" className="forgot-link">
-              Şifremi Unuttum
-            </Link>
-          </div>
-        </Form.Item>
-
-        <Form.Item>
           <Button type="primary" htmlType="submit" className="login-button ">
             Giriş Yap
           </Button>
@@ -91,7 +82,7 @@ const Login = () => {
           Üye değil misiniz? <Link to="/register">Kayıt Ol</Link>
         </Form.Item>
       </Form>
-    </div>
+    </Layout>
   );
 };
 

@@ -47,8 +47,8 @@ const Booked = () => {
       dataIndex: "price",
       render: (price, field) => {
         return field.type === "saatlik"
-          ? `₺${price} / saat`
-          : `₺${price} / gün`;
+          ? `${price} TL / saat`
+          : `${price} TL / gün`;
       },
       width: 200,
     },
