@@ -105,6 +105,7 @@ const Booked = () => {
       console.log("Kullanıcı verisi alınamadı:", error);
     }
   };
+
   useEffect(() => {
     fetchBooked();
   }, []);

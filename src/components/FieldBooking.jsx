@@ -60,6 +60,7 @@ const FieldBooking = () => {
         return;
       }
 
+      //sepette zaten var mı diye
       alreadyInCart = selectedHours.filter((hour) =>
         cart.some(
           (item) =>
@@ -94,6 +95,7 @@ const FieldBooking = () => {
         alert("bu tarih zaten sepette mevcut.");
         return;
       }
+
       const newItem = {
         id: selectedField.id,
         name: selectedField.name,
@@ -137,6 +139,7 @@ const FieldBooking = () => {
         <Select.Option value="saatlik">Saatlik Sahalar</Select.Option>
         <Select.Option value="günlük">Günlük Sahalar</Select.Option>
       </Select>
+      {/*saha listelemek için */}
       <Row gutter={16} style={{ padding: 24, justifyContent: "space-between" }}>
         {filteredFields.map((field) => (
           <Col xl={7} key={field.id}>

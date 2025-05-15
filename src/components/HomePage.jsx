@@ -34,7 +34,7 @@ function HomePage() {
           justify="center"
           style={{ textAlign: "center", marginBottom: "20px", padding: "40px" }}
         >
-          <Title level={3}>⚽ İstediğin Halısahayı Şimdi Kirala!</Title>
+          <Title level={3}> İstediğin Halısahayı Şimdi Kirala!</Title>
           <Paragraph style={{ fontSize: "1em", color: "#595959" }}>
             Bünyemizde bulunan en iyi halısahaları istediğin an oturduğun yerden
             kirala ve arkadaşlarınla unutulmaz anlarına bir yenisi daha ekle!
@@ -42,14 +42,14 @@ function HomePage() {
         </div>
         <Row gutter={16}>
           <Col span={8}>
-            <Card title="🏆 Üst Seviye Halısahalar " variant="borderless">
+            <Card title=" Üst Seviye Halısahalar " variant="borderless">
               En iyi zemin kalitesi, modern soyunma odaları ve aydınlatma
               sistemleri barındıran halısahalarımızda futbolun keyfini çıkarın!
             </Card>
           </Col>
 
           <Col span={8}>
-            <Card title="🚀 Hızlı ve Kolay Rezervasyon " variant="borderless">
+            <Card title=" Hızlı ve Kolay Rezervasyon " variant="borderless">
               Kullanımı kolay arayüzümüz sayesinde birkaç tıklamayla istediğiniz
               tarih ve saat aralığına göre kolayca kiralayaın. Zamanınız
               değerli, biz de öyle düşünüyoruz!
@@ -58,7 +58,7 @@ function HomePage() {
 
           <Col span={8}>
             <Card
-              title="💰 Seçime Göre Fiyat Karşılaştırması "
+              title=" Seçime Göre Fiyat Karşılaştırması "
               variant="borderless"
             >
               Farklı özelliklere ve kiralama seçeneklerine sahip halısahaların
@@ -67,23 +67,23 @@ function HomePage() {
           </Col>
         </Row>
         <Title level={3} style={{ textAlign: "center" }}>
-          ✨ Neden Halısaha Sistemi?
+          Neden Halısaha Sistemi?
         </Title>
         <Row gutter={16} justify="center" style={{ padding: "40px" }}>
           <Col span={8} style={{ textAlign: "center" }}>
-            <Card title="✔️ Geniş Seçenek" variant="borderless">
+            <Card title=" Geniş Seçenek" variant="borderless">
               Her zevke uygun sahalar.
             </Card>
           </Col>
 
           <Col span={8} style={{ textAlign: "center" }}>
-            <Card title="⏱️Zamandan Tasarruf" variant="borderless">
+            <Card title="Zamandan Tasarruf" variant="borderless">
               Hızlı rezervasyon.
             </Card>
           </Col>
 
           <Col span={8} style={{ textAlign: "center" }}>
-            <Card title="👍 Güvenilir Platform" variant="borderless">
+            <Card title=" Güvenilir Platform" variant="borderless">
               Güvenli kiralama.
             </Card>
           </Col>

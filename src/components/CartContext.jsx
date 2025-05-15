@@ -1,9 +1,7 @@
 import { Modal } from "antd";
 import React, { createContext, useEffect, useState } from "react";
-
 export const CartContext = createContext();
 
-//saatler ve her biri için boş yazması
 const hours = [17, 18, 19, 20, 21, 22, 23];
 
 const getHourlyAvailability = () => {
@@ -16,11 +14,6 @@ const getHourlyAvailability = () => {
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [modal, setModal] = useState(false);
-  const closeModal = () => {
-    setModal(false);
-  };
-
-  //saha bilgileri
   const [fields, setFields] = useState([
     {
       id: 1,
@@ -99,7 +92,11 @@ export const CartProvider = ({ children }) => {
       },
     },
   ]);
+  const closeModal = () => {
+    setModal(false);
+  };
 
+  //Sheets'ten verileri çekiyorum dolu boş kontrolu için
   const fetchAvailability = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -118,6 +115,7 @@ export const CartProvider = ({ children }) => {
       const result = await response.json();
 
       console.log(result);
+
       if (result && Array.isArray(result.data)) {
         const updatedFields = fields.map((field) => {
           const bookedItems = result.data.filter(
@@ -125,7 +123,6 @@ export const CartProvider = ({ children }) => {
           );
           console.log(bookedItems);
 
-          //başkası o günü aldıysa dolu görüncek ve rezervasyon yapılmayacak
           bookedItems.forEach((item) => {
             const { TARIH, SAAT } = item;
             if (field.type === "saatlik" && field.availability[TARIH]) {
@@ -141,6 +138,7 @@ export const CartProvider = ({ children }) => {
           return field;
         });
 
+        setFields(updatedFields);
       } else {
         console.error("Beklenen veri dizisi alınamadı.", result);
       }
@@ -149,12 +147,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  //sayfa ilk açıldığında fetchAvailability çalışıyor.
   useEffect(() => {
     fetchAvailability();
   }, []);
 
-  //saha seçtiğinde sepete ekleme
   const addCart = (selectedField, selectedHours, selectedDate) => {
     const newItem =
       selectedField.type === "saatlik"
@@ -172,6 +168,7 @@ export const CartProvider = ({ children }) => {
             },
           ];
     console.log(newItem);
+    setCart([...cart, ...newItem]);
   };
 
   const deleteCart = (key) => {
@@ -179,7 +176,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const paymentSuccess = () => {
-    //const userMaile kadar olan kısım nocodeaçılınca kapatılacak çünkü bu frontend de olanı
+    //nocodeapi bağlanmadan önce frontend hali
 
     /*const updatedFields = fields.map((field) => {
       const bookedItems = cart.filter((item) => item.id === field.id);

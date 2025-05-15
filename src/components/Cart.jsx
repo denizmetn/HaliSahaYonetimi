@@ -25,7 +25,6 @@ const useStyle = createStyles(({ css, token }) => {
 const Cart = () => {
   const { styles } = useStyle();
   const { cart, deleteCart, paymentSuccess } = useContext(CartContext);
-
   const [total, setTotal] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
@@ -102,6 +101,7 @@ const Cart = () => {
     },
   ];
 
+  //tabloya yazılacak değerler
   const dataSource = cart.map((field) => ({
     key: field.key,
     name: field.name,
@@ -169,7 +169,6 @@ const Cart = () => {
                 maxLength={5}
                 onInput={(e) => {
                   let value = e.target.value.replace(/\D/g, "");
-                  //1den buyukse başına 0
                   if (value.length === 1 && parseInt(value, 10) > 1) {
                     e.target.value = "0" + value + "/";
                   } else if (value.length === 2) {

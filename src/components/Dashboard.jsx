@@ -41,6 +41,7 @@ const Dashboard = () => {
     fetchGetUser();
   }, []);
 
+  //profil bilgileri için get
   const fetchGetUser = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -69,6 +70,7 @@ const Dashboard = () => {
       .catch((error) => console.log("Kullanıcı verisi alınamadı:", error));
   };
 
+  //profil bilg. kayıt ve güncelleme
   const handleSave = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

@@ -38,7 +38,6 @@ const Login = () => {
         }
       })
       .catch((error) => console.log("error", error));
-    //nocode açılınca kaldırılacak
   };
   return (
     <Layout className="login-container">
